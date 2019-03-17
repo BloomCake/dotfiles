@@ -1,0 +1,31 @@
+alias ..='cd ..'
+alias la='ls -lah'
+alias du1='du -xHhd 1 | sort -k2'
+alias df='df -h'
+alias tmux='tmux -2 -CC'
+
+alias rdp='bash /home/tobi/scripts/rdp.sh rdp'
+alias rdpext='bash /home/tobi/scripts/rdp.sh gpext'
+alias rdpint='bash /home/tobi/scripts/rdp.sh gpint'
+alias rdpcover='bash /home/tobi/scripts/rdp.sh cover'
+alias rdpgf='bash /home/tobi/scripts/rdp.sh gf'
+
+alias chromebsproxy='screen -S bschrome google-chrome --proxy-server="http://proxyext.mschool-ad.muenchen.musin.de:8080"'
+
+
+if [ $EUID != 0 ]; then
+	alias su='sudo su'
+fi
+
+if [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+	alias ls='ls --color'
+fi
+
+if [ -f "${DIR}/vimrc" ]; then
+	alias vim="vim -u ${DIR}/vimrc"
+fi
+
+BIN_SSHRC="$( which sshrc )"
+if [ "${BIN_SSHRC}" != "" ]; then
+    alias ssl="LC_REMOTE_USER=$(whoami) sshrc -o SendEnv=LC_REMOTE_USER ${1}"
+fi

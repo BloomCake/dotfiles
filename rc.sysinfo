@@ -1,0 +1,14 @@
+# if [ "${PS1}" ] && [ "${IS_LOGINSHELL}" ]; then
+if [ "${PS1}" ]; then
+    if hash bsdinfo 2>/dev/null; then
+        bsdinfo
+    elif hash neofetch 2>/dev/null; then
+        echo ""
+        # set fancy mr maintenance image
+        neofetch --caca /home/tobi/.dotfiles/tools/mrmaintenance.png --size 400
+    elif hash archey 2>/dev/null; then
+        archey
+    elif hash screenfetch 2>/dev/null; then
+        screenfetch 2> /dev/null
+    fi
+fi

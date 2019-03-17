@@ -1,0 +1,123 @@
+BG_CLOCK="40;80;120"
+FG_CLOCK="120;160;200"
+
+FG_ALERT="255;92;92"
+
+BG_USERHOST="60;100;140"
+FG_USERHOST="196;196;196"
+FG_ROOT="255;128;128"
+FG_WWW="128;255;128"
+FG_AT="128;128;128"
+FG_HOST="196;196;196"
+
+BG_PATH="80;120;160"
+FG_PATH="255;255;255"
+
+BG_GIT_CLEAN="40;120;80"
+BG_GIT_DIRTY="120;60;60"
+FG_GIT="255;255;255"
+
+SYM_ALERT="×"
+SYM_ALERT="\xf0\x9f\x92\xa9 "
+
+SYM_BRANCH=""
+SYM_DETACHED="➦"
+SYM_DIRTY="±"
+
+source ${DIR}/helper/prompt-colors.sh
+
+function prompt_clock {
+    printf " $(date +"%H:%M")"
+}
+
+function prompt_status {
+    if [ $RETVAL != 0 ]; then
+        local oldfg=${CURRENT_FG}
+        set_fg ${FG_ALERT}
+        printf " ${SYM_ALERT}"
+        set_fg ${oldfg}
+    fi
+}
+
+function prompt_user {
+    if [ $EUID == 0 ]; then
+        local oldfg=${CURRENT_FG}
+        set_fg ${FG_ROOT}
+        printf "$(whoami)"
+        set_fg ${oldfg}
+    elif [ "$(whoami)" == "www" ]; then
+        local oldfg=${CURRENT_FG}
+        set_fg ${FG_WWW}
+        printf "$(whoami)"
+        set_fg ${oldfg}
+    else
+        printf "$(whoami)"
+    fi
+}
+
+function prompt_host {
+    if [ $IS_SSH == 1 ]; then
+        local oldfg=${CURRENT_FG}
+        set_fg ${FG_AT}
+        printf " @ "
+        set_fg ${FG_HOST}
+        printf "$(hostname)"
+        set_fg ${oldfg}
+    fi
+}
+
+function prompt_path {
+    printf "${PWD/#$HOME/~}"
+}
+
+function prompt_git {
+    ref=$(git symbolic-ref HEAD --short 2> /dev/null)
+    shortref=$(git rev-parse --short HEAD 2> /dev/null)
+
+    if [ -n "${ref}" ]; then
+        if [ -z "${GIT_DIRTY}" ]; then
+            printf "${GIT_URL} ${SYM_BRANCH} ${ref}"
+        else
+            printf "${GIT_URL} ${SYM_BRANCH} ${ref}${SYM_DIRTY}"
+        fi
+    else
+        if [ -z "${GIT_DIRTY}" ]; then
+            printf "${GIT_URL} ${SYM_DETACHED} ${shortref}"
+        else
+            printf "${GIT_URL} ${SYM_DETACHED} ${shortref}${SYM_DIRTY}"
+        fi
+    fi
+}
+
+function prompt {
+    RETVAL=$?
+
+    IS_SSH=0
+    #if [ -n "${SSH_CLIENT}" ] || [ -n "${SSH_TTY}" ]; then IS_SSH=1; fi
+    if [[ $(who am i) =~ \(.+\)$ ]]; then IS_SSH=1; fi
+
+    GIT_URL=$(git config --get remote.origin.url 2> /dev/null)
+    GIT_DIRTY=$(git status --porcelain --ignore-submodules 2> /dev/null)
+
+    # build prompt
+    echo ""
+    start_segment ${BG_CLOCK} ${FG_CLOCK}
+    printf "`prompt_clock`"
+    printf "`prompt_status`"
+    start_segment ${BG_USERHOST} ${FG_USERHOST}
+    printf "`prompt_user`"
+    printf "`prompt_host`"
+    start_segment ${BG_PATH} ${FG_PATH}
+    printf "`prompt_path`"
+        if [ -n "${GIT_URL}" ] && [ -z "${GIT_DIRTY}" ]; then
+            start_segment ${BG_GIT_CLEAN} ${FG_GIT}
+            printf "`prompt_git`"
+        elif [ -n "${GIT_URL}" ]; then
+            start_segment ${BG_GIT_DIRTY} ${FG_GIT}
+            printf "`prompt_git`"
+        fi
+    end_segment
+    printf "\n» "
+}
+
+PS1="\`prompt\`"

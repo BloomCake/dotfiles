@@ -1,0 +1,43 @@
+SOURCES="https://github.com/BloomCake/dotfiles.git"
+
+# only run in interactive shell
+if [ ! -z "$PS1" ]; then
+    # Move old dotfiles dir if necessary
+    if [ -d ~/${LC_REMOTE_USER}/dotfiles ]; then
+        echo "Move ~/${LC_REMOTE_USER} to ~/.${LC_REMOTE_USER}"
+        mv ~/${LC_REMOTE_USER} ~/.${LC_REMOTE_USER}
+    fi
+
+    # Check if dotfiles exist and download them if necessary
+    if [ ! -d ~/.dotfiles ] && [ ! -d ~/.${LC_REMOTE_USER}/dotfiles ]; then
+        echo ""
+        echo "Load dotfiles from GitHub"
+        echo ""
+
+        BIN_GIT="$( which git )"
+        if [ "${BIN_GIT}" == "" ]; then
+            echo "No Git client found!"
+            echo ""
+            echo "Try:"
+            echo "  sudo pkg install git"
+            echo "  sudo apt install git"
+            echo "  brew install git"
+            echo ""
+        else
+            echo "Git found"
+            echo "Remote user: ${LC_REMOTE_USER}"
+            echo ""
+
+            mkdir -p ~/.${LC_REMOTE_USER}
+            ${BIN_GIT} -C ~/.${LC_REMOTE_USER} clone ${SOURCES}
+        fi
+    fi
+
+    if [ -f ~/.dotfiles/bashrc ]; then
+        source ~/.dotfiles/bashrc
+    elif [ -f ~/.${LC_REMOTE_USER}/dotfiles/bashrc ]; then
+        source ~/.${LC_REMOTE_USER}/dotfiles/bashrc
+    else
+        echo "Neither ~/.dotfiles/bashrc nor ~/.${LC_REMOTE_USER}/dotfiles/bashrc found"
+    fi
+fi
