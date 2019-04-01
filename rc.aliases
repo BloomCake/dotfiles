@@ -2,7 +2,7 @@ alias ..='cd ..'
 alias la='ls -lah'
 alias du1='du -xHhd 1 | sort -k2'
 alias df='df -h'
-alias tmux='tmux -2 -CC'
+# alias tmux='tmux -2 -CC'
 
 alias rdp='bash /home/tobi/scripts/rdp.sh rdp'
 alias rdpext='bash /home/tobi/scripts/rdp.sh gpext'

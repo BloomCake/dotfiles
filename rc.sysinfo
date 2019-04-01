@@ -1,5 +1,4 @@
-# if [ "${PS1}" ] && [ "${IS_LOGINSHELL}" ]; then
-if [ "${PS1}" ]; then
+if [ "${PS1}" ] && [ "${IS_LOGINSHELL}" ] && [ ! "$TMUX" ]; then
     if hash bsdinfo 2>/dev/null; then
         bsdinfo
     elif hash neofetch 2>/dev/null; then

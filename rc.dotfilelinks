@@ -23,3 +23,9 @@ if [ -f ${DIR}/../.gitconfig ] && ! grep -q "path = ${DIR}/gitconfig" ${DIR}/../
 	echo "[include]" >> ${DIR}/../.gitconfig
 	echo "	path = ${DIR}/gitconfig" >> ${DIR}/../.gitconfig
 fi
+
+
+if [ ! -h ${DIR}/../.tmux.conf ]; then
+        echo "Linking ${DIR}/tmux/tmux.conf to ${DIR}/../.tmux.conf"
+        ln -s ${DIR}/tmux/tmux.conf ${DIR}/../.tmux.conf
+fi
