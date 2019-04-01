@@ -33,9 +33,12 @@ if [ ! -z "$PS1" ]; then
         fi
     fi
 
+    # silently update dotfiles and source bashrc
     if [ -f ~/.dotfiles/bashrc ]; then
+        ${BIN_GIT} -C ~/dotfiles/ pull -q & disown
         source ~/.dotfiles/bashrc
     elif [ -f ~/.${LC_REMOTE_USER}/dotfiles/bashrc ]; then
+        ${BIN_GIT} -C ~/.${LC_REMOTE_USER}/dotfiles/ pull -q & disown
         source ~/.${LC_REMOTE_USER}/dotfiles/bashrc
     else
         echo "Neither ~/.dotfiles/bashrc nor ~/.${LC_REMOTE_USER}/dotfiles/bashrc found"
