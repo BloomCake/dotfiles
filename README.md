@@ -26,13 +26,13 @@ alias ls='ls --color'                            # Linux
 Read only:
 
 ```shell
-git clone https://bitbucket.org/bloomi/dotfiles.git ~/.dotfiles
+git clone https://github.com/BloomCake/dotfiles.git ~/.dotfiles
 source ~/.dotfiles/bashrc
 ```
 
 Read/Write:
 
 ```shell
-git clone git@bitbucket.org:bloomi/.dotfiles.git
+git clone git@github.com:BloomCake/dotfiles.git ~/.dotfiles
 source ~/.dotfiles/bashrc
 ```
