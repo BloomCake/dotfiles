@@ -9,9 +9,8 @@ alias rdpext='bash /home/tobi/scripts/rdp.sh gpext'
 alias rdpint='bash /home/tobi/scripts/rdp.sh gpint'
 alias rdpcover='bash /home/tobi/scripts/rdp.sh cover'
 alias rdpgf='bash /home/tobi/scripts/rdp.sh gf'
-
-alias chromebsproxy='screen -S bschrome google-chrome --proxy-server="http://proxyext.mschool-ad.muenchen.musin.de:8080"'
-
+alias gls="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative staging..develop"
+alias glm="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative master..staging"
 
 if [ $EUID != 0 ]; then
 	alias su='sudo su'

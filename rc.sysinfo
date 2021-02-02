@@ -3,7 +3,7 @@ if [ "${PS1}" ] && [ "${IS_LOGINSHELL}" ] && [ ! "$TMUX" ]; then
         bsdinfo
     elif hash neofetch 2>/dev/null; then
         echo ""
-        # set fancy mr maintenance image
+        # set fancy image
         neofetch --caca /home/tobi/.dotfiles/tools/mrmaintenance.png --size 400
     elif hash archey 2>/dev/null; then
         archey

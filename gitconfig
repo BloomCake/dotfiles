@@ -7,6 +7,7 @@
     undo = reset --soft HEAD^
     stash-all = stash save --include-untracked
     glog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+    cp = "!f() { git commit -a -m \"$@\" && git push; }; f"
 [merge]
     conflictstyle = diff3
 [commit]
